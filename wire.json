@@ -1,0 +1,259 @@
+{
+  "phases": [
+    "first",
+    "change"
+  ],
+  "routes": [
+    {
+      "path": "/prices",
+      "method": "GET",
+      "status": 200,
+      "params": {
+        "site": "OK1",
+        "day": "2027-04-03"
+      },
+      "data": [
+        {
+          "site": "OK1",
+          "district": "南岸",
+          "service": "接运",
+          "operator": "X车辆队",
+          "term": "必含",
+          "charge": "每趟",
+          "amount": 500
+        },
+        {
+          "site": "OK1",
+          "district": "南岸",
+          "service": "保管",
+          "operator": "南岸场馆",
+          "term": "必含",
+          "charge": "每小时",
+          "amount": 30
+        }
+      ]
+    },
+    {
+      "path": "/prices",
+      "method": "GET",
+      "status": 200,
+      "phase": "change",
+      "params": {
+        "site": "OK2",
+        "day": "2027-04-03"
+      },
+      "data": [
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "接运",
+          "operator": "X车辆队",
+          "term": "必含",
+          "charge": "每趟",
+          "amount": 520
+        },
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "保管",
+          "operator": "北岸场馆",
+          "term": "必含",
+          "charge": "每小时",
+          "amount": 35
+        },
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "小厅",
+          "operator": "北岸场馆",
+          "term": "可选",
+          "charge": "每场",
+          "amount": 220
+        },
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "夜间保管",
+          "operator": "北岸场馆",
+          "term": "适用 00:00 后",
+          "charge": "每小时",
+          "amount": 40
+        }
+      ]
+    },
+    {
+      "path": "/prices",
+      "method": "GET",
+      "status": 200,
+      "params": {
+        "site": "OK2",
+        "day": "2027-04-03"
+      },
+      "data": [
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "接运",
+          "operator": "X车辆队",
+          "term": "必含",
+          "charge": "每趟",
+          "amount": 520
+        },
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "保管",
+          "operator": "北岸场馆",
+          "term": "必含",
+          "charge": "每小时",
+          "amount": 35
+        },
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "小厅",
+          "operator": "北岸场馆",
+          "term": "可选",
+          "charge": "每场",
+          "amount": 220
+        }
+      ]
+    },
+    {
+      "path": "/bill",
+      "method": "GET",
+      "status": 200,
+      "params": {
+        "quote": "F-024"
+      },
+      "data": [
+        {
+          "quote": "F-024",
+          "line": "L1",
+          "name": "接运",
+          "carrier": "X车辆队",
+          "paid": 180,
+          "transferTo": [
+            "OK2"
+          ]
+        },
+        {
+          "quote": "F-024",
+          "line": "L2",
+          "name": "保管",
+          "carrier": "南岸场馆",
+          "paid": 90,
+          "transferTo": []
+        }
+      ]
+    },
+    {
+      "path": "/holds/save",
+      "method": "POST",
+      "status": 202,
+      "phase": "change",
+      "expectedBody": {
+        "site": "OK2"
+      },
+      "receipt": {
+        "number": "F-032",
+        "status": "estimate",
+        "notice": "尚无可保留报价"
+      }
+    },
+    {
+      "path": "/holds/save",
+      "method": "POST",
+      "status": 202,
+      "expectedBody": {
+        "site": "OK2"
+      },
+      "receipt": {
+        "number": "F-031",
+        "status": "held",
+        "expires": "2027-04-02T19:12:00+08:00"
+      },
+      "drop": true
+    },
+    {
+      "path": "/holds/release",
+      "method": "POST",
+      "status": 202,
+      "expectedBody": {
+        "number": "F-031"
+      },
+      "receipt": {
+        "number": "F-031",
+        "status": "released"
+      }
+    }
+  ],
+  "forms": [
+    {
+      "title": "服务点预核价",
+      "query": [
+        [
+          "site",
+          "网点",
+          [
+            [
+              "OK1",
+              "南岸·松林"
+            ],
+            [
+              "OK2",
+              "北岸·松林"
+            ]
+          ]
+        ],
+        [
+          "day",
+          "办理日期",
+          null
+        ]
+      ],
+      "fields": [
+        [
+          "site",
+          "网点号"
+        ],
+        [
+          "requestId",
+          "请求号"
+        ]
+      ],
+      "source": "/prices",
+      "columns": [
+        "site",
+        "district",
+        "service",
+        "operator",
+        "term",
+        "charge",
+        "amount"
+      ],
+      "action": "/holds/save"
+    },
+    {
+      "title": "订金查账",
+      "query": [
+        [
+          "quote",
+          "原报价号",
+          null
+        ]
+      ],
+      "fields": [],
+      "source": "/bill",
+      "columns": [
+        "quote",
+        "line",
+        "name",
+        "carrier",
+        "paid",
+        "transferTo"
+      ],
+      "action": null
+    }
+  ]
+}
