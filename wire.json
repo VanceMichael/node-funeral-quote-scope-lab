@@ -10,7 +10,8 @@
       "status": 200,
       "params": {
         "site": "OK1",
-        "day": "2027-04-03"
+        "day": "2027-04-03",
+        "origin": "滨江里"
       },
       "data": [
         {
@@ -20,7 +21,9 @@
           "operator": "X车辆队",
           "term": "必含",
           "charge": "每趟",
-          "amount": 500
+          "amount": 500,
+          "startLocal": null,
+          "chargeScope": "独立"
         },
         {
           "site": "OK1",
@@ -29,7 +32,9 @@
           "operator": "南岸场馆",
           "term": "必含",
           "charge": "每小时",
-          "amount": 30
+          "amount": 30,
+          "startLocal": null,
+          "chargeScope": "独立"
         }
       ]
     },
@@ -40,7 +45,8 @@
       "phase": "change",
       "params": {
         "site": "OK2",
-        "day": "2027-04-03"
+        "day": "2027-04-03",
+        "origin": "滨江里"
       },
       "data": [
         {
@@ -50,7 +56,9 @@
           "operator": "X车辆队",
           "term": "必含",
           "charge": "每趟",
-          "amount": 520
+          "amount": 520,
+          "startLocal": null,
+          "chargeScope": "独立"
         },
         {
           "site": "OK2",
@@ -59,7 +67,9 @@
           "operator": "北岸场馆",
           "term": "必含",
           "charge": "每小时",
-          "amount": 35
+          "amount": 35,
+          "startLocal": null,
+          "chargeScope": "独立"
         },
         {
           "site": "OK2",
@@ -68,7 +78,9 @@
           "operator": "北岸场馆",
           "term": "可选",
           "charge": "每场",
-          "amount": 220
+          "amount": 220,
+          "startLocal": null,
+          "chargeScope": "独立"
         },
         {
           "site": "OK2",
@@ -77,7 +89,9 @@
           "operator": "北岸场馆",
           "term": "适用 00:00 后",
           "charge": "每小时",
-          "amount": 40
+          "amount": 40,
+          "startLocal": "00:00",
+          "chargeScope": "替代同日保管价"
         }
       ]
     },
@@ -87,7 +101,8 @@
       "status": 200,
       "params": {
         "site": "OK2",
-        "day": "2027-04-03"
+        "day": "2027-04-03",
+        "origin": "滨江里"
       },
       "data": [
         {
@@ -97,7 +112,9 @@
           "operator": "X车辆队",
           "term": "必含",
           "charge": "每趟",
-          "amount": 520
+          "amount": 520,
+          "startLocal": null,
+          "chargeScope": "独立"
         },
         {
           "site": "OK2",
@@ -106,7 +123,9 @@
           "operator": "北岸场馆",
           "term": "必含",
           "charge": "每小时",
-          "amount": 35
+          "amount": 35,
+          "startLocal": null,
+          "chargeScope": "独立"
         },
         {
           "site": "OK2",
@@ -115,7 +134,9 @@
           "operator": "北岸场馆",
           "term": "可选",
           "charge": "每场",
-          "amount": 220
+          "amount": 220,
+          "startLocal": null,
+          "chargeScope": "独立"
         }
       ]
     },
@@ -186,6 +207,80 @@
         "number": "F-031",
         "status": "released"
       }
+    },
+    {
+      "path": "/prices",
+      "method": "GET",
+      "status": 200,
+      "data": [
+        {
+          "site": "OK1",
+          "district": "南岸",
+          "service": "保管",
+          "operator": "南岸场馆",
+          "charge": "每小时",
+          "term": "必含",
+          "amount": 30
+        }
+      ],
+      "params": {
+        "site": "OK1",
+        "day": "2027-04-04",
+        "origin": "滨江里"
+      }
+    },
+    {
+      "path": "/prices",
+      "method": "GET",
+      "status": 200,
+      "data": [
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "保管",
+          "operator": "北岸场馆",
+          "charge": "每小时",
+          "term": "必含",
+          "amount": 35
+        },
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "夜间保管",
+          "operator": "北岸场馆",
+          "charge": "每小时",
+          "term": "必含",
+          "amount": 40,
+          "startLocal": "00:00",
+          "chargeScope": "替代同日保管价"
+        }
+      ],
+      "params": {
+        "site": "OK2",
+        "day": "2027-04-04",
+        "origin": "滨江里"
+      }
+    },
+    {
+      "path": "/prices",
+      "method": "GET",
+      "status": 200,
+      "data": [
+        {
+          "site": "OK2",
+          "district": "北岸",
+          "service": "接运",
+          "operator": "Y转运站",
+          "charge": "每趟",
+          "term": "必含",
+          "amount": 610
+        }
+      ],
+      "params": {
+        "site": "OK2",
+        "day": "2027-04-03",
+        "origin": "东桥"
+      }
     }
   ],
   "forms": [
@@ -210,6 +305,20 @@
           "day",
           "办理日期",
           null
+        ],
+        [
+          "origin",
+          "接运起点",
+          [
+            [
+              "滨江里",
+              "滨江里"
+            ],
+            [
+              "东桥",
+              "东桥"
+            ]
+          ]
         ]
       ],
       "fields": [
@@ -230,7 +339,9 @@
         "operator",
         "term",
         "charge",
-        "amount"
+        "amount",
+        "startLocal",
+        "chargeScope"
       ],
       "action": "/holds/save"
     },
